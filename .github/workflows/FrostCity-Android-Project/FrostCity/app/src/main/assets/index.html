@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>极寒新城</title>
+<style>
+:root{--bg:#07131f;--bg2:#0e2740;--card:#12304c;--line:#2a5b86;--ice:#bfe6ff;--fire:#ff8a2a;--tx:#eaf6ff;--mut:#86a9c4;--bad:#ff6b5e;--ok:#7be0a4;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#07131f}}
+:root[data-theme="dark"]{--bg:#07131f}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+#app{max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.top{display:flex;gap:6px;padding:10px;background:var(--bg2);border-bottom:1px solid var(--line)}
+.res{flex:1;background:var(--card);border-radius:10px;padding:6px 8px;font-size:13px;text-align:center}
+.res b{display:block;font-size:15px}.res small{color:var(--mut);font-size:11px}
+.scene{position:relative;margin:10px;border-radius:16px;overflow:hidden;height:270px;background:linear-gradient(#10314f,#0a1f33 70%,#dfeefa 70%);border:1px solid var(--line)}
+.snow{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 90px 80px,#fff,transparent),radial-gradient(3px 3px at 150px 20px,#fff,transparent),radial-gradient(2px 2px at 220px 120px,#fff,transparent),radial-gradient(2px 2px at 300px 60px,#fff,transparent);background-size:340px 160px;animation:fall 5s linear infinite;opacity:.8}
+.bliz .snow{animation-duration:1.2s;opacity:1}
+@keyframes fall{to{background-position:-60px 160px}}
+.fire{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);font-size:64px;filter:drop-shadow(0 0 22px var(--fire));animation:fl 1.4s ease-in-out infinite}
+@keyframes fl{50%{transform:translateX(-50%) scale(1.08)}}
+.houses{position:absolute;inset:0;pointer-events:none}
+.row{position:absolute;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-end;padding:0 14px}.r0{bottom:92px;filter:brightness(.85)}.r1{bottom:52px}
+.bd{text-align:center;line-height:1}.bd b{display:block;font-weight:400}.bd i{display:block;font-size:10px;font-style:normal;color:var(--ice);margin-top:2px}
+.work{animation:wk .7s infinite alternate}@keyframes wk{to{transform:translateY(-4px) rotate(-6deg)}}
+.warm{position:absolute;left:10px;right:10px;top:10px}
+.bar{height:9px;background:#0006;border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#4cc3ff,#ffb347);transition:width .3s}
+.st{font-size:12px;color:var(--ice);display:flex;justify-content:space-between;margin-bottom:4px}
+.tap{position:absolute;right:10px;bottom:8px;border:0;border-radius:12px;padding:9px 14px;background:var(--fire);color:#2a1000;font-weight:700;font-size:14px}
+.msg{margin:0 10px;padding:8px 10px;font-size:13px;background:var(--card);border-radius:10px;color:var(--ice);min-height:34px}
+main{flex:1;padding:10px;display:grid;gap:8px;align-content:start}
+.b{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;background:var(--card);padding:10px;border-radius:12px;border:1px solid var(--line)}
+.b .e{font-size:30px;text-align:center}.b h4{margin:0;font-size:15px}.b p{margin:2px 0 0;font-size:12px;color:var(--mut)}
+button.up{border:0;border-radius:10px;padding:8px 10px;background:var(--ice);color:#06223a;font-weight:700;font-size:12px;min-width:84px}
+button.up:disabled{background:#2b4a63;color:#7f9bb2}
+button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.nav{display:flex;border-top:1px solid var(--line);background:var(--bg2);position:sticky;bottom:0}
+.nav button{flex:1;padding:12px 2px;border:0;background:none;color:var(--mut);font-size:12px}
+#bfld{display:none}#bfld.on{display:flex;position:fixed;inset:0;z-index:50;background:#000b;align-items:center;justify-content:center;padding:16px}
+.bx{width:100%;max-width:420px;background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center;position:relative;overflow:hidden}
+.bs{display:flex;align-items:center;gap:8px;margin:14px 0}.u{flex:1}.u big{font-size:30px;display:block;margin-bottom:6px}.vs{font-weight:700;color:var(--fire)}
+.hit{animation:hit .4s}@keyframes hit{20%{transform:translateX(-8px) rotate(-3deg);filter:brightness(2)}60%{transform:translateX(8px)}}
+.fl{position:absolute;inset:0;pointer-events:none}.dm{position:absolute;top:96px;font-weight:700;font-size:20px;color:var(--bad);animation:up 1s forwards}@keyframes up{to{transform:translateY(-44px);opacity:0}}
+.br{font-size:20px;font-weight:700;min-height:30px;margin:0}
+.fx{position:absolute;top:70px;left:14%;font-size:34px;animation:fly .6s forwards}@keyframes fly{to{left:72%;transform:scale(1.7) rotate(20deg);opacity:0}}.cr{color:#ffd24a;font-size:26px}
+.skb{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 10px 0}.sk{border:1px solid var(--line);background:var(--card);color:var(--tx);border-radius:10px;padding:4px 8px;font-size:20px;line-height:1.1}.sk small{display:block;font-size:10px;color:var(--mut)}.sk:disabled{opacity:.5}
+.sm{border:0;border-radius:8px;padding:3px 8px;background:var(--fire);color:#2a1000;font-weight:700;font-size:12px;margin-left:6px}.sm:disabled{background:#2b4a63;color:#7f9bb2}
+.mt{position:fixed;right:10px;bottom:64px;z-index:20;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:18px}
+.burst{position:fixed;left:50%;top:38%;font-size:64px;z-index:60;pointer-events:none;animation:bs .9s forwards}@keyframes bs{from{transform:translate(-50%,0) scale(.4);opacity:1}to{transform:translate(-50%,-60px) scale(1.6);opacity:0}}
+@media(prefers-reduced-motion:reduce){.hit,.dm,.fx,.work,.burst{animation:none}}.nav .on{color:var(--fire);font-weight:700}
+.go{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
+.go big{font-size:42px;display:block}
+.hint{font-size:12px;color:var(--mut)}
+.wk{margin-top:4px;font-size:13px;display:flex;align-items:center;gap:6px}.wk button{width:32px;height:28px;border:0;border-radius:8px;background:#2b4a63;color:var(--tx);font-size:16px}
+.q{text-align:left;border-color:var(--fire)}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.site{padding:10px 8px}.site big{font-size:32px}.site h4{margin:2px 0}.site .up{width:100%}.own{border-color:var(--ok)}.go .up{margin-top:8px}.go .bar{margin-top:8px}
+@media(prefers-reduced-motion:reduce){.snow,.fire{animation:none}}
+</style></head><body><div id="app">
+<div class="top" id="top"></div>
+<div class="scene" id="scene"><div class="snow"></div><div class="warm" id="warm"></div><div class="houses" id="hs"></div><div class="fire">🔥</div><button class="tap" id="tap">🪓 砍柴</button></div>
+<button class="mt" id="mt" data-mu="1"></button><div class="msg" id="msg"></div><div id="evbox"></div><div id="skb"></div><div id="bfld"></div>
+<main id="main"></main>
+<div class="nav"><button data-tab="city" class="on">🏙️ 城市</button><button data-tab="war">⚔️ 远征</button><button data-tab="hero">🦸 英雄</button><button data-tab="tech">🔬 科技</button><button data-tab="map">🗺️ 地图</button><button data-tab="perk">🎁 福利</button></div>
+</div>
+<script>
+const B={furnace:{n:'暖炉',e:'🔥',c:{wood:40,coal:20},d:'提升保暖，消耗更多煤'},lumber:{n:'伐木场',e:'🪓',c:{wood:20},d:'每秒产出木材'},hunt:{n:'猎人小屋',e:'🍖',c:{wood:30},d:'每秒产出食物'},mine:{n:'煤矿',e:'⛏️',c:{wood:50,food:20},d:'每秒产出煤炭'},house:{n:'住房',e:'🏠',c:{wood:40,coal:10},d:'提高幸存者上限'},camp:{n:'兵营',e:'⚔️',c:{wood:60,food:30,coal:20},d:'提升远征战力'},
+clinic:{n:'医疗站',e:'🏥',c:{wood:80,food:40,coal:20},d:'幸存者来得更快，饥寒致死更晚'},
+depot:{n:'仓库',e:'📦',c:{wood:90,coal:20},d:'资源上限 +150/级'},
+workshop:{n:'工坊',e:'🏭',c:{wood:100,food:30,coal:40},d:'建造时间 -6%/级'},
+tower:{n:'瞭望塔',e:'🗼',c:{wood:80,food:30,coal:30},d:'暴风雪降温 -2°，战力 +8/级'}};
+const RN={wood:'木材',food:'食物',coal:'煤炭'};
+const def=()=>({r:{wood:80,food:80,coal:60},l:{furnace:1,lumber:1,hunt:1,mine:0,house:1,camp:0},pop:4,warm:60,stage:1,cd:0,bz:70,t:Date.now(),a1:0,a2:0,w:{wood:2,food:2,coal:0},q:null,qi:0,h:{},tk:{},rs:null,mp:{},ev:null,et:100,sg:'',sn:0,ac:{},bzn:0,mu:0,sc:{},bf:0,fe:{d:'',x:{}},sh:{},st:{},wb:{d:'',st:1},log:'欢迎来到极寒新城。守住暖炉，活下去。'});
+let S=def(),tab='city';
+try{const x=JSON.parse(localStorage.getItem('frostcity')||'null');if(x&&x.r)S=Object.assign(def(),x)}catch(e){}
+const L=k=>S.l[k]||0,cap=()=>Math.round((300+200*L('furnace')+150*L('depot'))*(1+.2*TL('store'))*hbuf('cap')),pcap=()=>4+4*L('house')+mpop();
+const cost=k=>{const o={};for(const r in B[k].c)o[r]=Math.ceil(B[k].c[r]*Math.pow(1.7,L(k)));return o};
+const can=k=>{const c=cost(k);return Object.keys(c).every(r=>S.r[r]>=c[r])};
+const RATE={wood:['lumber',.6],food:['hunt',.5],coal:['mine',.4]};
+const slots=r=>2*L(RATE[r][0]),used=()=>S.w.wood+S.w.food+S.w.coal,idle=()=>S.pop-used();
+const prod=()=>{const o={};for(const r in RATE)o[r]=Math.min(S.w[r],slots(r))*RATE[r][1]*hbuf(r)*(1+.08*TL('gather'))+mb(r);return o};
+const fix=()=>{for(const r of ['coal','food','wood']){while(used()>S.pop&&S.w[r]>0)S.w[r]--}for(const r in RATE)S.w[r]=Math.min(S.w[r],slots(r))};
+const auto=()=>{for(const r of ['food','wood','coal'])while(idle()>0&&S.w[r]<slots(r))S.w[r]++};
+const maxL=k=>k==='furnace'?10:L('furnace')+1;
+const bt=k=>Math.ceil(6*Math.pow(1.5,L(k))*(1-.06*Math.min(L('workshop'),10)));
+function tick(dt,off){
+ if(S.q){S.q.left-=dt;if(S.q.left<=0)done()}
+ if(S.rs){S.rs.left-=dt;if(S.rs.left<=0)tdone()}
+ const p=prod(),c=cap();
+ for(const r in p)S.r[r]=Math.min(c,S.r[r]+p[r]*dt);
+ S.r.food=Math.max(0,S.r.food-S.pop*.15*dt);
+ S.r.coal=Math.max(0,S.r.coal-.12*L('furnace')*(1-.08*TL('burn'))*dt);
+ fix();if(off)return;
+ const tg=S.r.coal>0?25+L('furnace')*12+3*TL('warm')+(hbuf('warm')-1)*20:-10;
+ S.warm+= (tg-S.warm)*.05*dt;S.warm=Math.max(0,Math.min(100,S.warm));
+ S.cd=Math.max(0,S.cd-dt);for(const k in S.sc)S.sc[k]=Math.max(0,S.sc[k]-dt);bossTick();if(S.ev===null){S.et-=dt;if(S.et<=0){S.ev=Math.floor(Math.random()*E.length);snd('ev');vib(30);S.et=90+Math.random()*60}}S.bz-=dt;
+ if(S.bz<=0){snd('bad');vib([80,40,80]);S.bz=75;S.bzn=(S.bzn||0)+1;const d=Math.max(4,40-L('furnace')*3-2*TL('warm')-2*L('tower'));S.warm=Math.max(0,S.warm-d);S.log='❄️ 暴风雪来袭！温度骤降 '+d+'°，保持煤炭充足。'}
+ if(S.warm<15||S.r.food<=0){S.a1+=dt;if(S.a1>=6+4*L('clinic')+(hbuf('med')-1)*20){S.a1=0;if(S.pop>1){S.pop--;S.log='💀 严寒或饥饿夺走了一名幸存者。'}}}else S.a1=0;
+ if(S.r.food>20&&S.warm>=40&&S.pop<pcap()){S.a2+=dt;if(S.a2>=12*(1-.08*Math.min(L('clinic'),8))){S.a2=0;S.pop++;auto();S.log='🧑 一名幸存者加入了新城。'}}
+}
+function build(k){if(S.q||!can(k)||L(k)>=maxL(k))return;const c=cost(k);for(const r in c)S.r[r]-=c[r];S.q={k,left:bt(k),tot:bt(k)};S.log='🔨 开始'+(L(k)?'升级':'建造')+B[k].n}
+function done(){const k=S.q.k;S.l[k]=L(k)+1;S.log='✅ '+B[k].n+' 升至 Lv.'+L(k);S.q=null;auto();snd('ok');vib(30)}
+function speed(){if(!S.q||S.r.wood<8)return;S.r.wood-=8;S.q.left-=3;if(S.q.left<=0)done()}
+function march(){
+ const pw=Math.round(pw0()*(1+S.bf)),en=eof(S.stage);
+ if(!L('camp')||S.cd>0||S.r.food<20)return;
+ S.r.food-=20;S.cd=20;
+ const wn=Math.random()<Math.min(.95,pw/(en*1.2));S.bf=0;battle('第 '+S.stage+' 关：'+einfo(S.stage)[0]+(boss(S.stage)?'（首领）':''),pw,en,wn,einfo(S.stage)[1]);if(wn){const g=Math.round(S.stage*30*hbuf('win')*(boss(S.stage)?2:1));S.r.wood=Math.min(cap(),S.r.wood+g);S.r.coal=Math.min(cap(),S.r.coal+g/2);S.r.food=Math.min(cap(),S.r.food+g);S.log='🏆 远征获胜！获得木材、食物 '+g+'，煤炭 '+g/2;S.stage++;const sk=rh(),sn=boss(S.stage-1)?4:1;gain(sk,sn);S.log+='；'+H[sk].n+' 碎片 +'+sn}
+ else{if(S.pop>1){S.pop--;fix()}S.log='🐺 远征失败，损失一名队员。提升兵营再试。'}
+}
+const H={hunter:{n:'艾琳',e:'🏹',d:'食物产出',p:12,r:'food',c:{food:80,wood:60}},smith:{n:'马库斯',e:'🔨',d:'木材产出',p:10,r:'wood',c:{wood:120,coal:30}},miner:{n:'老煤',e:'🧔',d:'煤炭产出',p:10,r:'coal',c:{wood:100,food:60}},knight:{n:'雷恩',e:'🛡️',d:'远征奖励',p:18,r:'win',c:{food:120,wood:100,coal:50}},
+warm:{n:'老玛',e:'🧓',d:'保暖目标',p:8,r:'warm',u:2,s:'°',c:{wood:130,coal:80}},
+med:{n:'莉娜',e:'🧑‍⚕️',d:'饥寒致死间隔',p:9,r:'med',u:2,s:' 秒',c:{food:140,wood:90}},
+atk:{n:'薇拉',e:'🎖️',d:'全军战力',p:22,r:'atk',c:{food:160,wood:140,coal:90}},
+cap:{n:'老周',e:'🧑‍💼',d:'资源上限',p:6,r:'cap',c:{wood:150,food:100,coal:60}}};
+const HL=k=>S.h[k]||0,hmax=()=>L('camp')*2;
+const hcost=k=>{const o={};for(const r in H[k].c)o[r]=Math.ceil(H[k].c[r]*Math.pow(1.8,HL(k)));return o};
+const hcan=k=>L('camp')>0&&HL(k)<hmax()&&Object.keys(hcost(k)).every(r=>S.r[r]>=hcost(k)[r]);
+const hbuf=r=>{let m=1;for(const k in H)if(H[k].r===r)m+=.1*HL(k)*(1+.2*ST(k));return m};
+const hpow=()=>{let s=0;for(const k in H)s+=H[k].p*HL(k)*(1+.25*ST(k));return s};
+const pw0=()=>Math.round((L('camp')*15+S.pop+hpow()+mpow()+8*L('tower'))*(1+.08*TL('tact'))*hbuf('atk'));
+function hire(k){if(!hcan(k))return;const c=hcost(k);for(const r in c)S.r[r]-=c[r];S.h[k]=HL(k)+1;S.log='🌟 '+H[k].n+(HL(k)>1?' 升至 Lv.'+HL(k):' 加入了你的队伍')}
+function heroUI(){put(`<p class="hint">英雄等级上限 = 兵营等级 × 2（当前 ${hmax()}）。英雄战力计入远征，并提供产出加成。招募后，主界面会出现技能按钮，点击即可手动释放（有冷却）。</p>`+Object.keys(H).map(k=>{const c=hcost(k),lv=HL(k);return `<div class="b"><div class="e">${H[k].e}</div><div><h4>${H[k].n} ${lv?'Lv.'+lv:'未招募'} <small style='color:#ffd24a'>${'★'.repeat(ST(k))}${'☆'.repeat(5-ST(k))}</small></h4><p>技能 ${SK[k][0]}｜战力 ${Math.round(H[k].p*lv*(1+.25*ST(k)))}｜${H[k].d} +${Math.round((H[k].u||10)*lv*(1+.2*ST(k)))}${H[k].s||'%'}</p><p>${Object.keys(c).map(r=>RN[r]+' '+c[r]).join('，')}</p><p>碎片 ${S.sh[k]||0}/${STC[ST(k)]||'满'}${lv&&ST(k)<5?` <button class="sm" data-star="${k}" ${(S.sh[k]||0)>=STC[ST(k)]?'':'disabled'}>升星</button>`:''}</p></div><button class="up" data-hire="${k}" ${hcan(k)?'':'disabled'}>${L('camp')<1?'需兵营':lv>=hmax()?'提升兵营':lv?'升级':'招募'}</button></div>`}).join(''))}
+const T={warm:{n:'保暖研究',e:'🧥',d:'暖炉保暖目标 +3°，暴风雪降温 -2°',c:{wood:100,food:60}},gather:{n:'采集效率',e:'🧺',d:'三种资源产出 +8%',c:{wood:120,food:80}},store:{n:'仓库扩容',e:'📦',d:'资源上限 +20%',c:{wood:150,coal:50}},burn:{n:'节能燃烧',e:'♨️',d:'暖炉耗煤 -8%',c:{wood:100,coal:60}},tact:{n:'战术训练',e:'🎯',d:'远征战力 +8%',c:{food:120,coal:60}}};
+const TL=k=>S.tk[k]||0,tcost=k=>{const o={};for(const r in T[k].c)o[r]=Math.ceil(T[k].c[r]*Math.pow(1.8,TL(k)));return o},tt=k=>Math.ceil(12*Math.pow(1.6,TL(k)));
+const tcan=k=>!S.rs&&TL(k)<5&&TL(k)<L('furnace')&&Object.keys(tcost(k)).every(r=>S.r[r]>=tcost(k)[r]);
+function study(k){if(!tcan(k))return;const c=tcost(k);for(const r in c)S.r[r]-=c[r];S.rs={k,left:tt(k),tot:tt(k)};S.log='🔬 开始研究 '+T[k].n}
+function tdone(){const k=S.rs.k;S.tk[k]=TL(k)+1;S.log='🔬 '+T[k].n+' 升至 Lv.'+TL(k);S.rs=null;snd('ok')}
+function techUI(){let h=`<p class="hint">科技等级不能超过暖炉等级，最高 5 级；同一时间只能研究一项。</p>`;
+if(S.rs){const k=S.rs.k;h+=`<div class="go"><h4>🔬 ${T[k].n} 研究中，剩 ${Math.ceil(S.rs.left)} 秒</h4><div class="bar"><i style="width:${Math.round(100-Math.ceil(S.rs.left)/S.rs.tot*100)}%"></i></div></div>`}
+put(h+Object.keys(T).map(k=>{const c=tcost(k),lv=TL(k),mx=lv>=5;return `<div class="b"><div class="e">${T[k].e}</div><div><h4>${T[k].n} Lv.${lv}/5</h4><p>${T[k].d}</p><p>${mx?'已研究完成':Object.keys(c).map(r=>RN[r]+' '+c[r]).join('，')+'；用时 '+tt(k)+' 秒'}</p></div><button class="up" data-study="${k}" ${tcan(k)?'':'disabled'}>${mx?'满级':lv>=L('furnace')?'先升暖炉':S.rs?'研究中':'研究'}</button></div>`}).join(''))}
+const M=[
+{n:'林地',e:'🌲',p:25,r:{wood:.8}},
+{n:'冰湖渔场',e:'🐟',p:45,r:{food:.8}},
+{n:'废弃煤矿',e:'⚫',p:70,r:{coal:.6}},
+{n:'狼群巢穴',e:'🐺',p:100,pop:2},
+{n:'针叶林',e:'🌲',p:150,r:{wood:1.5}},
+{n:'旧军营',e:'🏚️',p:210,pow:20},
+{n:'北境矿脉',e:'💎',p:290,r:{coal:1.2}},
+{n:'雪山要塞',e:'🏔️',p:400,r:{wood:.5,food:.5,coal:.5},pop:4},
+{n:'冰封港口',e:'⚓',p:520,r:{food:2}},
+{n:'雪原神殿',e:'⛩️',p:700,pow:40,pop:2},
+{n:'极光矿场',e:'🌌',p:950,r:{coal:2,wood:1.5}},
+{n:'冰霜王座',e:'👑',p:1300,r:{wood:1,food:1,coal:1},pop:6,pow:60}];
+const mo=i=>S.mp[i],mb=r=>M.reduce((a,s,i)=>a+(mo(i)&&s.r&&s.r[r]||0),0),mpop=()=>M.reduce((a,s,i)=>a+(mo(i)&&s.pop||0),0),mpow=()=>M.reduce((a,s,i)=>a+(mo(i)&&s.pow||0),0);
+const mcost=20,mchance=i=>Math.min(.95,pw0()*(1+S.bf)/(M[i].p*1.2));
+function mdesc(s){return [...Object.keys(s.r||{}).map(r=>RN[r]+' +'+s.r[r]+'/秒'),s.pop?'人口上限 +'+s.pop:'',s.pow?'战力 +'+s.pow:''].filter(Boolean).join('，')}
+function attack(i){if(mo(i)||(i>0&&!mo(i-1))||S.cd>0||S.r.food<mcost)return;S.r.food-=mcost;S.cd=15;const wn=Math.random()<mchance(i);battle('进攻：'+M[i].n,Math.round(pw0()*(1+S.bf)),M[i].p,wn,M[i].e);S.bf=0;if(wn){S.mp[i]=1;S.log='🚩 占领了'+M[i].n+'！'+mdesc(M[i])}else{if(S.pop>1){S.pop--;fix()}S.log='🐺 进攻'+M[i].n+'失败，损失一名队员。'}}
+function mapUI(){put(`<p class="hint">按顺序逐个占领据点，进攻消耗食物 ${mcost}，与远征共用整备时间。已占领的据点每天可探索一次（食物 10），次日刷新。当前战力 ${pw0()}。</p>${bossCard()}<div class="mg">`+M.map((s,i)=>{const o=mo(i),lock=i>0&&!mo(i-1)&&!o;return `<div class="go site ${o?'own':''}"><big>${s.e}</big><h4>${s.n}</h4><p class="hint">守军战力 ${s.p}</p><p class="hint">${mdesc(s)}</p>${o?(S.fe.d===today()&&S.fe.x[i]?'<p class="hint">今日已探索</p>':`<button class='up' data-ex='${i}' ${S.r.food<10?'disabled':''}>探索（食物 10）</button>`):`<button class="up" data-atk="${i}" ${lock||S.cd>0||S.r.food<mcost?'disabled':''}>${lock?'未解锁':S.cd>0?'整备 '+Math.ceil(S.cd)+' 秒':'进攻 '+Math.round(mchance(i)*100)+'%'}</button>`}</div>`}).join('')+'</div>')}
+const E=[
+{t:'🛷 商队路过',d:'商人愿用煤炭换你的食物。',o:[['交换：食物 60 换煤 100',()=>{if(S.r.food<60)return '食物不够，商队离开了。';S.r.food-=60;S.r.coal=Math.min(cap(),S.r.coal+100);return '交易成功，换到 100 煤炭。'}],['拒绝',()=>'商队继续赶路。']]},
+{t:'🧳 受伤的旅人',d:'一名旅人倒在营地门口。',o:[['收留（食物 30）',()=>{if(S.r.food<30||S.pop>=pcap())return '没有足够的食物或住处。';S.r.food-=30;S.pop++;auto();return '旅人伤愈后加入了新城。'}],['拒绝',()=>'你关上了门。']]},
+{t:'🥶 极寒夜',d:'气温骤降，暖炉快撑不住了。',o:[['添柴（煤炭 40）',()=>{if(S.r.coal<40){S.warm=Math.max(0,S.warm-20);return '煤不够，温度下降。'}S.r.coal-=40;S.warm=Math.min(100,S.warm+15);return '暖炉烧旺，温度回升。'}],['硬扛',()=>{S.warm=Math.max(0,S.warm-20);return '温度骤降 20°。'}]]},
+{t:'🏚️ 雪下废墟',d:'雪堆下露出一座旧仓库。',o:[['派人搜索（食物 15）',()=>{if(S.r.food<15)return '食物不够，无法出发。';S.r.food-=15;const g=100+Math.floor(Math.random()*100);S.r.wood=Math.min(cap(),S.r.wood+g);S.r.coal=Math.min(cap(),S.r.coal+g/2);return '搜出木材 '+g+'、煤炭 '+g/2+'。'}],['忽略',()=>'你没有理会。']]},
+{t:'🐺 野狼袭营',d:'一群饿狼逼近营地。',o:[['迎战',()=>{if(Math.random()<Math.min(.9,pw0()/60)){S.r.food=Math.min(cap(),S.r.food+80);return '击退狼群，缴获 80 食物。'}S.r.food=Math.max(0,S.r.food-40);return '没能守住，被叼走 40 食物。'}],['躲避',()=>{S.r.food=Math.max(0,S.r.food-30);return '躲过一劫，但损失了 30 食物。'}]]}];
+function pick(i){if(S.ev===null)return;const r=E[S.ev].o[i][1]();S.ev=null;S.log=r}
+function evUI(){let h='';if(S.ev!==null){const e=E[S.ev];h=`<div class='go q' style='margin:8px 10px 0'><h4>${e.t}</h4><p class='hint'>${e.d}</p>${e.o.map((o,i)=>`<button class='up' data-ev='${i}' style='margin-right:8px'>${o[0]}</button>`).join('')}</div>`}if(evbox._h!==h){evbox._h=h;evbox.innerHTML=h}}
+const dstr=d=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(),today=()=>dstr(new Date()),yday=()=>dstr(new Date(Date.now()-864e5));
+const AC=[
+{n:'初到雪原',d:'暖炉升到 Lv.3',ok:()=>L('furnace')>=3,g:{wood:100}},
+{n:'人丁兴旺',d:'幸存者达到 12 人',ok:()=>S.pop>=12,g:{food:150}},
+{n:'度过寒潮',d:'平安度过 5 次暴风雪',ok:()=>(S.bzn||0)>=5,g:{coal:300}},
+{n:'英雄集结',d:'招募全部 8 位英雄',ok:()=>Object.keys(S.h).length>=8,g:{coal:200,food:200}},
+{n:'科技达人',d:'累计研究 10 级科技',ok:()=>Object.values(S.tk).reduce((a,b)=>a+b,0)>=10,g:{wood:300,food:300}},
+{n:'雪原远征军',d:'远征到达第 10 关',ok:()=>S.stage>=10,g:{wood:400,food:400,coal:400}},
+{n:'开疆拓土',d:'占领全部 12 个据点',ok:()=>Object.keys(S.mp).length>=12,g:{wood:500,food:500,coal:500}}];
+function sign(){if(S.sg===today())return;S.sn=S.sg===yday()?S.sn+1:1;S.sg=today();const g=80+40*((S.sn-1)%7);for(const r of ['wood','food','coal'])S.r[r]=Math.min(cap(),S.r[r]+g);S.log='📅 签到成功，第 '+S.sn+' 天，每种资源 +'+g}
+function claimAc(i){const a=AC[i];if(!a.ok()||S.ac[i])return;S.ac[i]=1;for(const r in a.g)S.r[r]=Math.min(cap(),S.r[r]+a.g[r]);S.log='🏆 成就达成：'+a.n}
+function perkUI(){const ok=S.sg!==today(),n=ok?(S.sg===yday()?S.sn+1:1):S.sn,g=80+40*((n-1)%7);
+put(`<div class='go q'><h4>📅 每日签到：连续第 ${n} 天</h4><p class='hint'>奖励木材、食物、煤炭各 ${g}。每 7 天一轮，第 7 天最高；断签从第 1 天重新算。</p><button class='up' data-sign='1' ${ok?'':'disabled'}>${ok?'签到':'今日已签到'}</button></div><p class='hint'>成就</p>`+AC.map((a,i)=>{const d=a.ok(),c=S.ac[i];return `<div class='b'><div class='e'>${c?'✅':d?'🏆':'🔒'}</div><div><h4>${a.n}</h4><p>${a.d}</p><p>奖励 ${Object.keys(a.g).map(r=>RN[r]+' '+a.g[r]).join('，')}</p></div><button class='up' data-ac='${i}' ${d&&!c?'':'disabled'}>${c?'已领取':d?'领取':'未达成'}</button></div>`}).join(''))}
+function battle(t,my,en,win,em){const o=document.getElementById('bfld'),hl=Object.keys(S.h).sort((x,y)=>H[y].p*HL(y)-H[x].p*HL(x)).slice(0,3),hs=hl.map(k=>H[k].e).join('');o.className='on';
+o.innerHTML=`<div class='bx'><h4>${t}</h4><div class='bs'><div class='u' id='bu1'><big>🧑${hs}</big><div class='bar'><i id='h1' style='width:100%'></i></div><p class='hint'>我方战力 ${my}</p></div><div class='vs'>VS</div><div class='u' id='bu2'><big>${em}</big><div class='bar'><i id='h2' style='width:100%'></i></div><p class='hint'>敌方战力 ${en}</p></div></div><div id='fl' class='fl'></div><p id='br' class='br'></p></div>`;
+let a=100,b=100,i=0;const step=()=>{if(!document.getElementById('bu1'))return;i++;const mine=i%2===1,big=mine===win,d=big?34:12;
+if(mine)b=Math.max(0,b-d);else a=Math.max(0,a-d);
+const el=document.getElementById(mine?'bu2':'bu1');el.classList.remove('hit');void el.offsetWidth;el.classList.add('hit');
+document.getElementById(mine?'h2':'h1').style.width=(mine?b:a)+'%';
+const s=document.createElement('span');s.className='dm'+(mine&&hl.length?' cr':'');s.style.left=mine?'68%':'18%';s.textContent='-'+Math.round((mine?my:en)*(.6+Math.random()*.5));document.getElementById('fl').appendChild(s);
+snd(mine&&hl.length?'skill':'hit');vib(mine?12:25);
+if(mine&&hl.length){const k=hl[((i-1)/2)%hl.length],x=document.createElement('span');x.className='fx';x.textContent=SK[k][1];document.getElementById('fl').appendChild(x);document.getElementById('br').textContent=H[k].e+' '+H[k].n+'：'+SK[k][0]}
+if(i<6)setTimeout(step,600);else document.getElementById('br').innerHTML=(snd(win?'win':'bad'),vib(win?[40,30,80]:120),win?'🏆 胜利！':'💀 战败…')+`<br><button class='up' data-bc='1' style='margin-top:10px'>关闭</button>`};
+setTimeout(step,500)}
+const SK={hunter:['穿云箭','🏹'],smith:['烈焰重锤','🔨'],miner:['落石','🪨'],knight:['圣盾冲锋','🛡️'],warm:['炽焰风暴','🔥'],med:['寒霜护佑','✨'],atk:['全军冲锋','⚔️'],cap:['金币雨','💰']};
+const ES=[['雪原狼群','🐺'],['北极熊','🐻‍❄️'],['冰霜巨人','🧊'],['雪山雪怪','👹'],['极寒霜龙','🐉']],boss=s=>s%5===0,eof=s=>Math.round(s*18*(boss(s)?1.6:1)),einfo=s=>ES[Math.min(4,Math.floor((s-1)/5))];
+const SCN=[[['tower','🗼'],['workshop','🏭'],null,['camp','⛺'],['clinic','🏥']],[['house','🛖'],['lumber','🪓'],null,['hunt','🍖'],['mine','⛏️'],['depot','📦']]];
+function cityHTML(){return SCN.map((row,ri)=>`<div class='row r${ri}'>`+row.map(it=>{if(!it)return `<span style='width:64px'></span>`;const[k,e]=it,l=L(k),w=S.q&&S.q.k===k;return `<span class='bd${w?' work':''}' style='opacity:${l||w?1:.18}'><b style='font-size:${18+Math.min(l,10)*2.2}px'>${w&&!l?'🏗️':e}</b><i>${l?'Lv.'+l:'未建'}</i></span>`}).join('')+'</div>').join('')}
+const SKD={hunter:[60,l=>{S.r.food=Math.min(cap(),S.r.food+60*l);return '食物 +'+60*l}],
+smith:[90,l=>{const t=20+10*l;if(S.q)S.q.left-=t;if(S.rs)S.rs.left-=t;return '施工与研究加速 '+t+' 秒'}],
+miner:[60,l=>{S.r.coal=Math.min(cap(),S.r.coal+40*l);return '煤炭 +'+40*l}],
+knight:[120,l=>{S.bf=Math.max(S.bf,.3+.1*l);return '下一场战斗战力 +'+Math.round(S.bf*100)+'%'}],
+warm:[90,l=>{S.warm=Math.min(100,S.warm+20+5*l);return '温度回升 '+(20+5*l)+'°'}],
+med:[120,l=>{S.bz+=30+10*l;return '暴风雪推迟 '+(30+10*l)+' 秒'}],
+atk:[150,l=>{S.bf=Math.max(S.bf,.5+.1*l);return '下一场战斗战力 +'+Math.round(S.bf*100)+'%'}],
+cap:[120,l=>{for(const r of ['wood','food','coal'])S.r[r]=Math.min(cap(),S.r[r]+50*l);return '三种资源各 +'+50*l}]};
+function fxBurst(e){const s=document.createElement('span');s.className='burst';s.textContent=e;document.body.appendChild(s);setTimeout(()=>s.remove(),900)}
+function cast(k){if(!HL(k)||(S.sc[k]||0)>0)return;S.log=H[k].e+' '+SK[k][0]+'：'+SKD[k][1](HL(k)+ST(k));S.sc[k]=SKD[k][0];fxBurst(SK[k][1]);snd('skill');vib(20)}
+function skUI(){mt.textContent=S.mu?'🔇':'🔊';const ks=Object.keys(S.h);let h='';if(ks.length){h=`<div class='skb'>`+ks.map(k=>{const c=Math.ceil(S.sc[k]||0);return `<button class='sk' data-sk='${k}' ${c?'disabled':''}>${SK[k][1]}<small>${c?c+' 秒':SK[k][0]}</small></button>`}).join('')+(S.bf?`<span class='hint'>⚡下场战斗战力 +${Math.round(S.bf*100)}%</span>`:'')+`</div>`}if(skb._h!==h){skb._h=h;skb.innerHTML=h}}
+function explore(i){if(!mo(i)||S.r.food<10||(S.fe.d===today()&&S.fe.x[i]))return;if(S.fe.d!==today())S.fe={d:today(),x:{}};S.fe.x[i]=1;S.r.food-=10;const b=40+20*i,q=Math.random();let m;
+if(q<.55){const r=['wood','food','coal'][Math.floor(Math.random()*3)],g=Math.round(b*(1+Math.random()));S.r[r]=Math.min(cap(),S.r[r]+g);m='发现补给，'+RN[r]+' +'+g}
+else if(q<.8){const w=Math.random()<Math.min(.9,pw0()/(M[i].p*.8));battle('野外遭遇：'+M[i].n,pw0(),Math.round(M[i].p*.7),w,'🐺');if(w){S.r.food=Math.min(cap(),S.r.food+b*2);m='击退掠夺者，食物 +'+b*2}else{S.r.food=Math.max(0,S.r.food-20);m='遭遇掠夺者落败，损失 20 食物'}}
+else if(S.pop<pcap()){S.pop++;auto();m='一名流浪者加入了新城'}else{S.r.wood=Math.min(cap(),S.r.wood+b);m='流浪者留下了 '+b+' 木材'}
+S.log='🧭 '+M[i].n+'：'+m}
+let ac;function snd(t){if(S.mu)return;try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const P={tap:[[520,.05]],ok:[[660,.08],[880,.1]],bad:[[220,.15],[160,.2]],win:[[523,.1],[659,.1],[784,.2]],hit:[[140,.08]],skill:[[880,.06],[1175,.12]],ev:[[600,.06],[450,.1]]}[t]||[];let at=ac.currentTime;for(const[f,d]of P){const o=ac.createOscillator(),g=ac.createGain();o.type=t==='bad'||t==='hit'?'sawtooth':'triangle';o.frequency.value=f;g.gain.setValueAtTime(.08,at);g.gain.exponentialRampToValueAtTime(.001,at+d);o.connect(g);g.connect(ac.destination);o.start(at);o.stop(at+d);at+=d*.9}}catch(e){}}
+const vib=p=>{if(!S.mu)try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
+const ST=k=>S.st[k]||0,STC=[10,20,40,80,160],rh=()=>{const k=Object.keys(H);return k[Math.floor(Math.random()*k.length)]},gain=(k,n)=>{S.sh[k]=(S.sh[k]||0)+n};
+function star(k){if(!HL(k)||ST(k)>=5||(S.sh[k]||0)<STC[ST(k)])return;S.sh[k]-=STC[ST(k)];S.st[k]=ST(k)+1;S.log='⭐ '+H[k].n+' 升至 '+ST(k)+' 星';snd('ok');vib(30);fxBurst('⭐')}
+function bossTick(){if(S.wb.d!==today()){const o=Object.keys(S.mp);if(!o.length)return;const i=+o[Math.floor(Math.random()*o.length)],mx=M[i].p*6;S.wb={d:today(),i,hp:mx,mx,end:Date.now()+18e5,st:0};S.log='👹 限时 Boss 出现在'+M[i].n+'，30 分钟内讨伐！';snd('ev')}else if(S.wb.st===0&&Date.now()>S.wb.end){S.wb.st=2;S.log='👹 Boss 逃走了…'}}
+function hitBoss(){const b=S.wb;if(b.st!==0||S.cd>0||S.r.food<25)return;S.r.food-=25;S.cd=10;const d=Math.round(pw0()*(1+S.bf)*(.8+Math.random()*.6));S.bf=0;b.hp=Math.max(0,b.hp-d);fxBurst('⚔️');snd('hit');vib(20);
+if(b.hp<=0){b.st=1;const g=(b.i+1)*100,k=rh(),n=5+b.i;for(const r of ['wood','food','coal'])S.r[r]=Math.min(cap(),S.r[r]+g);gain(k,n);S.log='👹 Boss 被击败！三种资源各 +'+g+'，'+H[k].n+' 碎片 +'+n;snd('win');vib([40,30,80]);fxBurst('🏆')}else S.log='⚔️ 对 Boss 造成 '+d+' 伤害，剩余 '+b.hp}
+function bossCard(){const b=S.wb;if(!b||!b.d||b.d!==today())return `<p class='hint'>占领据点后，每天会刷新一个限时 Boss。</p>`;const s=M[b.i],left=Math.max(0,Math.ceil((b.end-Date.now())/1000));
+return `<div class='go q'><h4>👹 限时 Boss：${s.n}的霜巨人</h4><div class='bar'><i style='width:${Math.round(b.hp/b.mx*100)}%'></i></div><p class='hint'>${b.st===1?'已讨伐，奖励已领取':b.st===2?'Boss 已逃走，明天再来':`血量 ${b.hp}/${b.mx}，剩余 ${Math.floor(left/60)} 分 ${left%60} 秒`}</p>${b.st===0?`<button class='up' data-boss='1' ${S.cd>0||S.r.food<25?'disabled':''}>${S.cd>0?'整备 '+Math.ceil(S.cd)+' 秒':'讨伐（食物 25）'}</button>`:''}</div>`}
+const Q=[
+{t:'升级伐木场到 Lv.2',ok:()=>L('lumber')>=2,g:{wood:60}},
+{t:'升级住房到 Lv.2',ok:()=>L('house')>=2,g:{food:60,wood:40}},
+{t:'建造煤矿，保证暖炉有煤',ok:()=>L('mine')>=1,g:{coal:50}},
+{t:'暖炉升到 Lv.3',ok:()=>L('furnace')>=3,g:{wood:120,coal:60}},
+{t:'建造兵营',ok:()=>L('camp')>=1,g:{food:80,wood:80}},
+{t:'远征取得首胜',ok:()=>S.stage>=2,g:{wood:150,food:150,coal:80}},
+{t:'幸存者达到 10 人',ok:()=>S.pop>=10,g:{food:200,coal:100}},
+{t:'暖炉升到 Lv.5',ok:()=>L('furnace')>=5,g:{wood:400,food:300,coal:200}},
+{t:'招募 2 位英雄',ok:()=>Object.keys(S.h).length>=2,g:{wood:300,food:300,coal:150}},
+{t:'累计研究 3 级科技',ok:()=>Object.values(S.tk).reduce((a,b)=>a+b,0)>=3,g:{wood:400,food:400,coal:250}},
+{t:'占领 4 个据点',ok:()=>Object.keys(S.mp).length>=4,g:{wood:600,food:600,coal:400}}];
+function claim(){const q=Q[S.qi];if(!q||!q.ok())return;for(const r in q.g)S.r[r]=Math.min(cap(),S.r[r]+q.g[r]);S.log='🎁 任务完成：'+q.t;S.qi++}
+const put=h=>{if(main._h!==h){main._h=h;main.innerHTML=h}};
+const f=n=>n>=1000?(n/1000).toFixed(1)+'k':Math.floor(n);
+function render(){
+ const p=prod();
+ top.innerHTML=['wood','food','coal'].map(r=>`<div class="res"><small>${RN[r]}</small><b>${f(S.r[r])}</b><small>+${p[r].toFixed(1)}/秒</small></div>`).join('')+`<div class="res"><small>幸存者</small><b>${S.pop}/${pcap()}</b><small>战力 ${pw0()}</small></div>`;
+ scene.className='scene'+(S.bz<8?' bliz':'');
+ warm.innerHTML=`<div class="st"><span>体感温度 ${Math.round(S.warm-30)}°C</span><span>暴风雪 ${Math.ceil(S.bz)} 秒后</span></div><div class="bar"><i style="width:${S.warm}%"></i></div>`;
+ const sh=cityHTML();if(hs._h!==sh){hs._h=sh;hs.innerHTML=sh}document.querySelector('.fire').style.fontSize=(46+L('furnace')*5)+'px';
+ msg.textContent=S.log;evUI();skUI();
+ if(tab==='city'){
+  const q=Q[S.qi],wk={lumber:'wood',hunt:'food',mine:'coal'};
+  let h=`<div class="go q"><h4>${q?'📜 任务：'+q.t:'🎉 当前任务全部完成'}</h4>${q?`<p class="hint">奖励 ${Object.keys(q.g).map(r=>RN[r]+' '+q.g[r]).join('，')}</p><button class="up" data-claim="1" ${q.ok()?'':'disabled'}>${q.ok()?'领取奖励':'进行中'}</button>`:''}</div>`;
+  if(S.q){const k=S.q.k;h+=`<div class="go"><h4>🔨 ${B[k].n} 施工中，剩 ${Math.ceil(S.q.left)} 秒</h4><div class="bar"><i style="width:${Math.round(100-Math.ceil(S.q.left)/S.q.tot*100)}%"></i></div><button class="up" data-speed="1" ${S.r.wood>=8?'':'disabled'}>加速：木材 8，缩短 3 秒</button></div>`}
+  h+=`<p class="hint">空闲幸存者 ${idle()} 人。建筑等级不能超过暖炉等级 +1，同一时间只能施工一座。</p>`;
+  h+=Object.keys(B).map(k=>{const c=cost(k),mx=L(k)>=maxL(k),r=wk[k];return `<div class="b"><div class="e">${B[k].e}</div><div><h4>${B[k].n} Lv.${L(k)}</h4><p>${B[k].d}</p>${r?`<div class="wk">👷 ${S.w[r]}/${slots(r)}<button data-w="${r}" data-d="-1">－</button><button data-w="${r}" data-d="1">＋</button></div>`:''}<p>${mx?'':Object.keys(c).map(r=>RN[r]+' '+c[r]).join('，')+'；用时 '+bt(k)+' 秒'}</p></div><button class="up" data-b="${k}" ${(mx||S.q||!can(k))?'disabled':''}>${mx?(k==='furnace'?'满级':'先升暖炉'):S.q?'施工中':L(k)?'升级':'建造'}</button></div>`}).join('');
+  put(h);
+ }else if(tab==='hero'){heroUI()}else if(tab==='tech'){techUI()}else if(tab==='map'){mapUI()}else if(tab==='perk'){perkUI()}else{
+  const en=eof(S.stage),ei=einfo(S.stage);
+  put(`<div class="go"><big>${ei[1]}</big><h4>第 ${S.stage} 关：${ei[0]}${boss(S.stage)?'（首领，奖励翻倍）':''}</h4><p>敌方战力 ${en}，我方战力 ${pw0()}</p><p class="hint">出征消耗食物 20。${L('camp')?'':'需要先建造兵营。'}</p><button class="up" data-go="1" ${(!L('camp')||S.cd>0||S.r.food<20)?'disabled':''}>${S.cd>0?'整备中 '+Math.ceil(S.cd)+' 秒':'出征'}</button></div>`);
+ }
+}
+document.addEventListener('click',e=>{
+ const t=e.target.closest('button');if(!t)return;snd('tap');vib(8);
+ if(t.id==='tap'){S.r.wood=Math.min(cap(),S.r.wood+2+L('lumber'));if(Math.random()<.3)S.r.coal=Math.min(cap(),S.r.coal+1)}
+ else if(t.dataset.b)build(t.dataset.b);
+ else if(t.dataset.go)march();
+ else if(t.dataset.claim)claim();
+ else if(t.dataset.hire)hire(t.dataset.hire);
+ else if(t.dataset.study)study(t.dataset.study);
+ else if(t.dataset.atk)attack(+t.dataset.atk);
+ else if(t.dataset.sign)sign();
+ else if(t.dataset.ac)claimAc(+t.dataset.ac);
+ else if(t.dataset.ev)pick(+t.dataset.ev);
+ else if(t.dataset.bc)document.getElementById('bfld').className='';
+ else if(t.dataset.sk)cast(t.dataset.sk);
+ else if(t.dataset.ex)explore(+t.dataset.ex);
+ else if(t.dataset.mu){S.mu=S.mu?0:1}
+ else if(t.dataset.boss)hitBoss();
+ else if(t.dataset.star)star(t.dataset.star);
+ else if(t.dataset.speed)speed();
+ else if(t.dataset.w){const r=t.dataset.w,d=+t.dataset.d;if(d>0&&idle()>0&&S.w[r]<slots(r))S.w[r]++;if(d<0&&S.w[r]>0)S.w[r]--}
+ else if(t.dataset.tab){tab=t.dataset.tab;document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b===t))}
+ render();
+});
+const off=Math.min(3600,(Date.now()-S.t)/1000);
+if(off>30){tick(off,true);S.log='🌙 离线 '+Math.floor(off/60)+' 分钟，资源已结算。'}
+let last=Date.now(),sv=0;
+setInterval(()=>{const n=Date.now(),dt=Math.min(5,(n-last)/1000);last=n;tick(dt);render();if(++sv>=20){sv=0;S.t=n;try{localStorage.setItem('frostcity',JSON.stringify(S))}catch(e){}}},250);
+render();
+</script></body></html>
